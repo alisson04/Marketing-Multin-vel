@@ -24,13 +24,13 @@ and open the template in the editor.
         <?php 
         
         $cont = 0;
-        while ($cont < 15){
+        while ($cont < 20){
             $cont++;
             
             //SELECIONA O NÓ PAI ALEATORIAMENTE===================================================================
             if($cont > 1){
                 $no_selecionado = (rand(1 , sizeof($array_nos)));
-                echo "no selecionado: ".$no_selecionado."<br>";
+                //echo "no selecionado: ".$no_selecionado."<br>";
             }else{
             
             }
@@ -38,14 +38,13 @@ and open the template in the editor.
             //CRIA NOVO NÓ========================================================================================
             $array_nos[] = array(
                                     'id'        => $cont,
-                                    'pai'       => ($cont > 1 ? ($no_selecionado) : 'Início'),
+                                    'pai'       => ($cont > 1 ? ($no_selecionado) : 0),
                                     'qtd_filhos'=> 0
                                 );
             
             //INCREMENTA QUANTIDADE DE FILHOS=====================================================================
-            
-            
             if($cont > 1){
+                /*FEIO: MOSTRA A QTD DE FILHOS NO PRIMEIRO NIVEL ABAIXO=======================
                 $qtd = 0;
                 foreach ($array_nos as $val){
                     if($val['pai'] == $no_selecionado){
@@ -53,17 +52,21 @@ and open the template in the editor.
                     }
                 }
                 $array_nos[$no_selecionado-1]['qtd_filhos'] = $qtd;
-                // $id_pai = (($array_nos[$no_selecionado - 1]['$pai']) - 1);
+                
+                /*BONITO: MOSTRA A QTD DE FILHOS NO PRIMEIRO NIVEL ABAIXO=====================
+                $array_nos[$no_selecionado-1]['qtd_filhos'] = ($array_nos[$no_selecionado-1]['qtd_filhos']) +1;*/
+                
+                //MOSTRA A QTD DE FILHOS EM TODOS OS NIVEIS ABAIXO============================
+                $id_pai = (($array_nos[$no_selecionado - 1]['id']));//Na primeira vez não é o id_pai, mas o id do selecionado
                 // echo "ID_SELE: ".$array_nos[$no_selecionado - 1]['id']."<br> ID PAI SELE: ".$id_pai."<br><br>";
                 /*$id_pai = ($array_nos[$no_selecionado-1]['id']);
                 echo "ID_SELE: ".$array_nos[$no_selecionado]['id']."<br> ID PAI SELE: ".$id_pai."<br><br>";
-                $array_nos[$pai]['qtd_filhos'] = $array_nos[$pai]['qtd_filhos']+1;
+                $array_nos[$pai]['qtd_filhos'] = $array_nos[$pai]['qtd_filhos']+1;*/
                 while(($id_pai) > 0){
-                    $array_nos[$pai]['qtd_filhos'] = $array_nos[$pai]['qtd_filhos']+1;
-                    echo $array_nos[$no_selecionado-1]['pai']."<br>";
-                    $pai = $array_nos[$no_selecionado-1]['pai'];
-                    //$pai = "Início";
-                }*/
+                    $array_nos[$id_pai-1]['qtd_filhos'] = $array_nos[$id_pai-1]['qtd_filhos']+1;
+                    //echo $array_nos[$no_selecionado-1]['pai']."<br>";
+                    $id_pai = $array_nos[$id_pai-1]['pai'];
+                }
             }
         }
         ?>
@@ -85,23 +88,14 @@ and open the template in the editor.
             data.addRows([
                 <?php
                 echo "[{
-                            v: 'Início',
-                            f: 'Início'
+                            v: '0',
+                            f: '0'
                           },
                           '', 'The President'
                         ],";
                 foreach ($array_nos as $cha => $val){
-                    
                     echo "['".$val['id']."', '".$val['pai']."', '".$val['qtd_filhos']."']".($cha+1 == sizeof($array_nos) ? "" : ","); 
-                }
-                
-                /*echo "[{
-                        v: 'Jim',
-                        f: 'Jim<div>Vice President</div>'
-                      },
-                      '1', 'VP'
-                    ],";*/
-              
+                }              
                 ?>
             ]);
 
@@ -109,20 +103,9 @@ and open the template in the editor.
             var chart = new google.visualization.OrgChart(document.getElementById('chart_div'));
             // Draw the chart, setting the allowHtml option to true for the tooltips.
             chart.draw(data, {
-              allowHtml: true
-            });
-          }
+                allowHtml: true
+              });
+            }
         </script>
-        <?php
-        /*
-        <div align="center" style="width: 100%; margin-bottom: 50px">
-            <span class="circulo">
-                <?=$val['id']?><br>
-                <?='PAI: '.$val['pai']?><br><br>
-            </span>
-        </div>
-        */ 
-      ?>
     </body>
 </html>
-
