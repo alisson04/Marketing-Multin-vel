@@ -24,7 +24,7 @@ and open the template in the editor.
         <?php 
         
         $cont = 0;
-        while ($cont < 5){
+        while ($cont < 15){
             $cont++;
             
             //SELECIONA O NÓ PAI ALEATORIAMENTE===================================================================
@@ -43,9 +43,18 @@ and open the template in the editor.
                                 );
             
             //INCREMENTA QUANTIDADE DE FILHOS=====================================================================
+            
+            
             if($cont > 1){
-                $id_pai = (($array_nos[$no_selecionado - 1]['$pai']) - 1);
-                echo "ID_SELE: ".$array_nos[$no_selecionado - 1]['id']."<br> ID PAI SELE: ".$id_pai."<br><br>";
+                $qtd = 0;
+                foreach ($array_nos as $val){
+                    if($val['pai'] == $no_selecionado){
+                        $qtd++;
+                    }
+                }
+                $array_nos[$no_selecionado-1]['qtd_filhos'] = $qtd;
+                // $id_pai = (($array_nos[$no_selecionado - 1]['$pai']) - 1);
+                // echo "ID_SELE: ".$array_nos[$no_selecionado - 1]['id']."<br> ID PAI SELE: ".$id_pai."<br><br>";
                 /*$id_pai = ($array_nos[$no_selecionado-1]['id']);
                 echo "ID_SELE: ".$array_nos[$no_selecionado]['id']."<br> ID PAI SELE: ".$id_pai."<br><br>";
                 $array_nos[$pai]['qtd_filhos'] = $array_nos[$pai]['qtd_filhos']+1;
